@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ..:/workspaces/go-template:delegated
+      - app_go_pkg_mod:/go/pkg/mod
+    working_dir: /workspaces/go-template
+    cap_add:
+      # For debugging with dlv
+      - SYS_PTRACE
+    security_opt:
+      # For debugging with dlv
+      - seccomp:unconfined
+    command: /bin/bash
+
+volumes:
+  app_go_pkg_mod:
